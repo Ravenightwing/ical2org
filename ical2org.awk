@@ -439,9 +439,28 @@ BEGIN {
             if (date2 != "")
             {
                 # Fake some logbook entries so we can generate a clock report
+		hours1 = substr(date1, length(date1)-4, 2)
+                minutes1 = substr(date1, length(date1)-1, 2)
+
+                # Extract hours and minutes for date2
+                hours2 = substr(date2, length(date2)-4, 2)
+                minutes2 = substr(date2, length(date2)-1, 2)
+
+                # Calculate differences
+                hdif = hours2 - hours1
+                mdif = minutes2 - minutes1
+
+                if (mdif < 0) {
+                    mdif += 60
+                    hdif -= 1
+                }
+                dtime = sprintf("%d:%02d", hdif, mdif)
+
                 print "  :LOGBOOK:"
-                print "  CLOCK: [" date1 "]--[" date2 "] =>  " "0:00"
+                print "  CLOCK: [" date1 "]--[" date2 "] =>  " dtime
                 print "  :END"
+
+                
             }
             if (!condense)
                  print "<" date ">"
